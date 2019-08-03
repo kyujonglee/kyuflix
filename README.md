@@ -1,1 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# kyuflix
+practice react and Es6 
+
+## Screens
+
+- [] Home
+- [] TV
+- [] Search
+- [] Detail
+
+
+
+

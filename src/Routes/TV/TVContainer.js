@@ -1,6 +1,6 @@
 import React from 'react';
 import TVPresenter from './TVPresenter';
-import { tvapi } from '../../api';
+import { tvApi } from '../../api';
 
 export default class extends React.Component {
   state = {
@@ -15,13 +15,13 @@ export default class extends React.Component {
     try {
       const {
         data: { results: topRated }
-      } = await tvapi.topRated();
+      } = await tvApi.topRated();
       const {
         data: { results: popular }
-      } = await tvapi.popular();
+      } = await tvApi.popular();
       const {
         data: { results: airingToday }
-      } = await tvapi.airingToday();
+      } = await tvApi.airingToday();
       this.setState({ topRated, popular, airingToday });
     } catch {
       this.setState({
@@ -33,7 +33,6 @@ export default class extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return <TVPresenter {...this.state} />;
   }
 }

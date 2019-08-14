@@ -36,5 +36,11 @@ export const tvApi = {
       params: {
         append_to_response: 'videos'
       }
+    }),
+  search: term =>
+    api.get('search/tv', {
+      params: {
+        query: encodeURIComponent(term)
+      }
     })
 };

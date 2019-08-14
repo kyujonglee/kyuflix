@@ -7,18 +7,27 @@ export default class extends React.Component {
     movieResults: null,
     tvResults: null,
     searchTerm: '',
-    loading: true,
+    loading: false,
     error: null
   };
 
-  handleSubmit = () => {
+  handleSubmit = event => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== '') {
-      this.searchByTerm(searchTerm);
+      this.searchByTerm();
     }
   };
 
-  searchByTerm = async term => {
+  updateTerm = event => {
+    const {
+      target: { value }
+    } = event;
+    console.log(value);
+    this.setState({ searchTerm: value });
+  };
+
+  searchByTerm = async () => {
     const { searchTerm } = this.state;
     this.setState({ loading: true });
     try {
@@ -37,6 +46,12 @@ export default class extends React.Component {
   };
 
   render() {
-    return <SearchPresenter {...this.state} handleSubmit={this.handleSubmit} />;
+    return (
+      <SearchPresenter
+        {...this.state}
+        handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
+      />
+    );
   }
 }

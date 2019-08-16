@@ -26,7 +26,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage":"https://kyujonglee.github.io/kyuflix",
+  "homepage":"https://silly-nobel-95d26f.netlify.com/",
   "browserslist": {
     "production": [
       ">0.2%",

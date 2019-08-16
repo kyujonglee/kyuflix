@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.js": "/kyuflix/static/js/main.6c5de97c.chunk.js",
+    "main.js.map": "/kyuflix/static/js/main.6c5de97c.chunk.js.map",
+    "runtime~main.js": "/kyuflix/static/js/runtime~main.9ad56ba5.js",
+    "runtime~main.js.map": "/kyuflix/static/js/runtime~main.9ad56ba5.js.map",
+    "static/js/2.e6234b12.chunk.js": "/kyuflix/static/js/2.e6234b12.chunk.js",
+    "static/js/2.e6234b12.chunk.js.map": "/kyuflix/static/js/2.e6234b12.chunk.js.map",
+    "index.html": "/kyuflix/index.html",
+    "precache-manifest.5b0bead05de0504106d8d5d7d84792dd.js": "/kyuflix/precache-manifest.5b0bead05de0504106d8d5d7d84792dd.js",
+    "service-worker.js": "/kyuflix/service-worker.js",
+    "static/media/noImage.png": "/kyuflix/static/media/noImage.19d65de1.png"
+  }
+}

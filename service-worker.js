@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/kyuflix/precache-manifest.5b0bead05de0504106d8d5d7d84792dd.js"
+  "/kyuflix/precache-manifest.118adb993b84b9849dbe86fead3169ca.js"
 );
 
 self.addEventListener('message', (event) => {

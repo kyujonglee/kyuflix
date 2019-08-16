@@ -1,15 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "37731831aa2c9b7e42bd29252dac2adb",
+    "revision": "af443740197e2ea88f5d3fc549cee719",
     "url": "/kyuflix/index.html"
   },
   {
-    "revision": "69081786e7272f97cc6b",
-    "url": "/kyuflix/static/js/2.e6234b12.chunk.js"
+    "revision": "f8393409557a4d5e9b37",
+    "url": "/kyuflix/static/js/2.354601da.chunk.js"
   },
   {
-    "revision": "afb4ae4b4be0e29abefc",
-    "url": "/kyuflix/static/js/main.6c5de97c.chunk.js"
+    "revision": "c408a3a30a708fa79f23",
+    "url": "/kyuflix/static/js/main.02d68bcf.chunk.js"
   },
   {
     "revision": "14e57000156947ceb339",

@@ -9,15 +9,18 @@ const Container = styled.div`
 `;
 
 const Title = styled.span`
-  font-size: 14px;
+  display: inline-block;
+  font-size: 16px;
   font-weight: 600;
+  margin: 10px 5px;
+  text-transform: capitalize;
 `;
 
 const Grid = styled.div`
   margin-bottom: 25px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 125px);
-  grid-gap : 25px;
+  grid-gap: 25px;
 `;
 
 const Section = ({ title, children }) => (

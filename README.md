@@ -1,5 +1,6 @@
 # kyuflix
-practice react and Es6 
+
+practice react and Es6
 
 ## Screens
 
@@ -9,6 +10,7 @@ practice react and Es6
 - [ ] Detail
 
 ## API Verbs
+
 - [x] Now Playing (Movie)
 - [x] Upcoming (Movie)
 - [x] Top Rated(TV)
@@ -26,3 +28,6 @@ practice react and Es6
 - [ ] /collections Route
 - [ ] On TV show, show seasons and creators
 
+# Preview
+
+Try it on [netlify](https://silly-nobel-95d26f.netlify.com/)

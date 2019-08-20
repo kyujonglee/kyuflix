@@ -68,6 +68,20 @@ const Overview = styled.p`
   width: 50%;
 `;
 
+const ImdbLink = styled.a`
+  all: unset;
+  width: 20px;
+  height: 10px;
+  background-color: #f5c518;
+  color: #000000;
+  border-radius: 5px;
+  font-weight: 900;
+  text-transform: capitalize;
+  padding: 2px 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+`;
+
 const DetailPresenter = ({ result, loading, error }) =>
   loading ? (
     <>
@@ -120,6 +134,19 @@ const DetailPresenter = ({ result, loading, error }) =>
                     : `${genre.name} / `
                 )}
             </Item>
+            {result.imdb_id ? (
+              <>
+                <Divider>·</Divider>
+                <Item>
+                  <ImdbLink
+                    href={`https://www.imdb.com/title/${result.imdb_id}`}
+                    target="_blank"
+                  >
+                    imdb
+                  </ImdbLink>
+                </Item>
+              </>
+            ) : null}
           </ItemContainer>
           <Overview>{result.overview}</Overview>
         </Data>

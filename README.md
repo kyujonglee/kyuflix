@@ -22,7 +22,7 @@ practice react and Es6
 
 ## Code Challenge
 
-- [ ] IMDB LInk
+- [x] IMDB LInk
 - [ ] Tabs inside of Movie / Show Details ( YT Videos, Production Company & Countries)
 - [ ] Collections Link ex) collection
 - [ ] /collections Route

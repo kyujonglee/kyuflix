@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
@@ -82,8 +82,77 @@ const ImdbLink = styled.a`
   cursor: pointer;
 `;
 
-const DetailPresenter = ({ result, loading, error }) =>
-  loading ? (
+const TabContainer = styled.ul`
+  display: flex;
+  margin-top: 10px;
+`;
+
+const Tab = styled.li`
+  background-color: rgba(255, 255, 255, 0.2);
+  border-bottom: ${props => (props.Flag ? '2px solid white' : 'none')};
+  box-sizing: border-box;
+  padding: 10px 10px;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+`;
+
+const TabContent = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 30px 0px;
+  transition: all 0.3s ease-in-out;
+`;
+
+const TabLink = styled.a`
+  display: block;
+  cursor: pointer;
+  margin: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease-in-out;
+  font-size: 16px;
+  &:hover {
+    transform: scale(1.01);
+  }
+`;
+
+const ProContainer = styled.div`
+  width: 100%;
+  overflow: auto;
+  display: flex;
+`;
+const ProItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  padding: 0px 10px;
+  box-sizing: border-box;
+`;
+const ProImg = styled.img`
+  width: auto;
+  height: 100px;
+  margin-bottom: 10px;
+`;
+const ProTitle = styled.span`
+  text-align: center;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+`;
+
+const DetailPresenter = ({ result, loading, error }) => {
+  const initDetailTabs = {
+    youTubeFlag: false,
+    productionCompanyFlag: false,
+    productionCountriesFlag: false
+  };
+
+  const [detailTabs, setDetailTabs] = useState({
+    ...initDetailTabs,
+    youTubeFlag: true
+  });
+  return loading ? (
     <>
       <Helmet>
         <title>Loading | kyuflix</title>
@@ -110,11 +179,7 @@ const DetailPresenter = ({ result, loading, error }) =>
           }
         />
         <Data>
-          <Title>
-            {result.original_title
-              ? result.original_title
-              : result.original_name}
-          </Title>
+          <Title>{result.title ? result.title : result.name}</Title>
           <ItemContainer>
             <Item>
               {result.release_date
@@ -149,10 +214,89 @@ const DetailPresenter = ({ result, loading, error }) =>
             ) : null}
           </ItemContainer>
           <Overview>{result.overview}</Overview>
+          <TabContainer>
+            {/* {result.videos && result.videos.results.length && ( */}
+            {result.videos.results && result.videos.results.length !== 0 && (
+              <Tab
+                onClick={() =>
+                  setDetailTabs({ ...initDetailTabs, youTubeFlag: true })
+                }
+                Flag={detailTabs.youTubeFlag}
+              >
+                Youtube
+              </Tab>
+            )}
+            {result.production_companies &&
+              result.production_companies.length !== 0 && (
+                <Tab
+                  onClick={() =>
+                    setDetailTabs({
+                      ...initDetailTabs,
+                      productionCompanyFlag: true
+                    })
+                  }
+                  Flag={detailTabs.productionCompanyFlag}
+                >
+                  Production Company
+                </Tab>
+              )}
+            {result.production_countries &&
+              result.production_countries.length !== 0 && (
+                <Tab
+                  onClick={() =>
+                    setDetailTabs({
+                      ...initDetailTabs,
+                      productionCountriesFlag: true
+                    })
+                  }
+                  Flag={detailTabs.productionCountriesFlag}
+                >
+                  Production Countries
+                </Tab>
+              )}
+          </TabContainer>
+          <TabContent id="tabResult">
+            {detailTabs.youTubeFlag &&
+              result.videos.results.map(video => (
+                <TabLink
+                  href={`https://www.youtube.com/watch?v=${video.key}`}
+                  target="_blank"
+                  key={video.id}
+                >
+                  {video.name}
+                </TabLink>
+              ))}
+            {detailTabs.productionCompanyFlag && (
+              <ProContainer>
+                {result.production_companies.map(com => {
+                  return (
+                    <ProItem key={com.id}>
+                      <ProImg
+                        src={
+                          com.logo_path
+                            ? `https://image.tmdb.org/t/p/original${
+                                com.logo_path
+                              }`
+                            : require('../../assets/noImage.png')
+                        }
+                        alt={com.name}
+                      />
+                      <ProTitle>{com.name}</ProTitle>
+                    </ProItem>
+                  );
+                })}
+              </ProContainer>
+            )}
+            {detailTabs.productionCountriesFlag &&
+              result.production_countries.map((coun, idx) => {
+                return <ProTitle key={idx}>{coun.name}</ProTitle>;
+              })}
+          </TabContent>
         </Data>
       </Content>
     </Container>
   );
+};
 
 DetailPresenter.propTypes = {
   result: PropTypes.object,

@@ -172,7 +172,8 @@ const DetailPresenter = ({ result, loading, error }) => {
   const initDetailTabs = {
     youTubeFlag: false,
     productionCompanyFlag: false,
-    productionCountriesFlag: false
+    productionCountriesFlag: false,
+    createdByFlag : false
   };
 
   const [detailTabs, setDetailTabs] = useState({
@@ -242,7 +243,6 @@ const DetailPresenter = ({ result, loading, error }) => {
           </ItemContainer>
           <Overview>{result.overview}</Overview>
           <TabContainer>
-            {/* {result.videos && result.videos.results.length && ( */}
             {result.videos.results && result.videos.results.length !== 0 && (
               <Tab
                 onClick={() =>
@@ -281,6 +281,20 @@ const DetailPresenter = ({ result, loading, error }) => {
                   Production Countries
                 </Tab>
               )}
+            {result.created_by &&
+              result.created_by.length !== 0 && (
+                <Tab
+                  onClick={() =>
+                    setDetailTabs({
+                      ...initDetailTabs,
+                      createdByFlag: true
+                    })
+                  }
+                  Flag={detailTabs.createdByFlag}
+                >
+                  Created By
+                </Tab>
+              )}
           </TabContainer>
           <TabContent id="tabResult">
             {detailTabs.youTubeFlag &&
@@ -317,6 +331,10 @@ const DetailPresenter = ({ result, loading, error }) => {
             {detailTabs.productionCountriesFlag &&
               result.production_countries.map((coun, idx) => {
                 return <ProTitle key={idx}>{coun.name}</ProTitle>;
+              })}
+            {detailTabs.createdByFlag &&
+              result.created_by.map((per, idx) => {
+                return <ProTitle key={per.id}>{per.name}</ProTitle>;
               })}
           </TabContent>
           {result.belongs_to_collection && (

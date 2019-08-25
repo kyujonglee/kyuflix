@@ -24,8 +24,8 @@ practice react and Es6
 
 - [x] IMDB LInk
 - [x] Tabs inside of Movie / Show Details ( YT Videos, Production Company & Countries)
-- [ ] Collections Link ex) collection
-- [ ] /collections Route
+- [x] Collections Link ex) collection
+- [x] /collections Route
 - [ ] On TV show, show seasons and creators
 
 # Preview

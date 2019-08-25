@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import Loader from '../../Components/Loader';
+import Helmet from 'react-helmet';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -42,6 +43,7 @@ const Cover = styled.div`
 `;
 
 const Data = styled.div`
+  position: relative;
   width: 70%;
   margin-left: 10px;
 `;
@@ -95,6 +97,10 @@ const Tab = styled.li`
   font-size: 14px;
   color: white;
   cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(-3px);
+  }
 `;
 
 const TabContent = styled.div`
@@ -118,8 +124,8 @@ const TabLink = styled.a`
 
 const ProContainer = styled.div`
   width: 100%;
-  overflow: auto;
   display: flex;
+  flex-wrap: wrap;
 `;
 const ProItem = styled.div`
   display: flex;
@@ -136,9 +142,30 @@ const ProImg = styled.img`
   margin-bottom: 10px;
 `;
 const ProTitle = styled.span`
+  display: inline-block;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.8);
+  margin: 3px;
+`;
+
+const Collection = styled.button`
+  all: unset;
+  position: absolute;
+  bottom: 20px;
+  left: 5px;
+  transition: transform 0.3s ease-in-out;
+  font-size: 20px;
+  padding: 10px;
+  background-color: rgba(255, 107, 107);
+  border-radius: 5px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  &:hover {
+    transform: translateY(-3px);
+  }
 `;
 
 const DetailPresenter = ({ result, loading, error }) => {
@@ -292,6 +319,11 @@ const DetailPresenter = ({ result, loading, error }) => {
                 return <ProTitle key={idx}>{coun.name}</ProTitle>;
               })}
           </TabContent>
+          {result.belongs_to_collection && (
+            <Link to={`/collections/${result.belongs_to_collection.id}`}>
+              <Collection type="button">Collection</Collection>
+            </Link>
+          )}
         </Data>
       </Content>
     </Container>

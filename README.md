@@ -26,7 +26,7 @@ practice react and Es6
 - [x] Tabs inside of Movie / Show Details ( YT Videos, Production Company & Countries)
 - [x] Collections Link ex) collection
 - [x] /collections Route
-- [ ] On TV show, show seasons and creators
+- [x] On TV show, show seasons and creators
 
 # Preview
 

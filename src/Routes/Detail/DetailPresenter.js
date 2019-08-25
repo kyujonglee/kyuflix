@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Loader from '../../Components/Loader';
 import Helmet from 'react-helmet';
+import Section from '../../Components/Section';
+import Season from '../../Components/Season';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -172,13 +174,16 @@ const DetailPresenter = ({ result, loading, error }) => {
   const initDetailTabs = {
     youTubeFlag: false,
     productionCompanyFlag: false,
-    productionCountriesFlag: false
+    productionCountriesFlag: false,
+    createdByFlag: false,
+    seasonsFlag: false
   };
 
   const [detailTabs, setDetailTabs] = useState({
     ...initDetailTabs,
     youTubeFlag: true
   });
+
   return loading ? (
     <>
       <Helmet>
@@ -242,7 +247,6 @@ const DetailPresenter = ({ result, loading, error }) => {
           </ItemContainer>
           <Overview>{result.overview}</Overview>
           <TabContainer>
-            {/* {result.videos && result.videos.results.length && ( */}
             {result.videos.results && result.videos.results.length !== 0 && (
               <Tab
                 onClick={() =>
@@ -281,6 +285,32 @@ const DetailPresenter = ({ result, loading, error }) => {
                   Production Countries
                 </Tab>
               )}
+            {result.created_by && result.created_by.length !== 0 && (
+              <Tab
+                onClick={() =>
+                  setDetailTabs({
+                    ...initDetailTabs,
+                    createdByFlag: true
+                  })
+                }
+                Flag={detailTabs.createdByFlag}
+              >
+                Created By
+              </Tab>
+            )}
+            {result.seasons && result.seasons.length !== 0 && (
+              <Tab
+                onClick={() =>
+                  setDetailTabs({
+                    ...initDetailTabs,
+                    seasonsFlag: true
+                  })
+                }
+                Flag={detailTabs.seasonsFlag}
+              >
+                Seasons
+              </Tab>
+            )}
           </TabContainer>
           <TabContent id="tabResult">
             {detailTabs.youTubeFlag &&
@@ -318,6 +348,25 @@ const DetailPresenter = ({ result, loading, error }) => {
               result.production_countries.map((coun, idx) => {
                 return <ProTitle key={idx}>{coun.name}</ProTitle>;
               })}
+            {detailTabs.createdByFlag &&
+              result.created_by.map((per, idx) => {
+                return <ProTitle key={per.id}>{per.name}</ProTitle>;
+              })}
+            {detailTabs.seasonsFlag && (
+              <Section>
+                {result.seasons.map(season => {
+                  return (
+                    <Season
+                      key={season.id}
+                      imageUrl={season.poster_path}
+                      title={season.name}
+                      year={season.air_date}
+                      count={season.episode_count}
+                    />
+                  );
+                })}
+              </Section>
+            )}
           </TabContent>
           {result.belongs_to_collection && (
             <Link to={`/collections/${result.belongs_to_collection.id}`}>

@@ -15,8 +15,16 @@ const CollectionsContainer = props => {
   } = props;
   useEffect(() => {
     const fetchData = async () => {
-      const data = await moviesApi.collections(id);
-      setState(state => ({ ...state, result: data.data.parts, loading: false }));
+      const {
+        data: {
+          data: { parts: result }
+        }
+      } = await moviesApi.collections(id);
+      setState(state => ({
+        ...state,
+        result,
+        loading: false
+      }));
     };
     fetchData();
   }, [id]);

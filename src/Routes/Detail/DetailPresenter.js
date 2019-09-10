@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Loader from '../../Components/Loader';
 import Helmet from 'react-helmet';
-import Section from '../../Components/Section';
-import Season from '../../Components/Season';
+import Videos from '../Video';
+import Companies from '../Company';
+import Seasons from '../Season';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -93,7 +94,7 @@ const TabContainer = styled.ul`
 
 const Tab = styled.li`
   background-color: rgba(255, 255, 255, 0.2);
-  border-bottom: ${props => (props.Flag ? '2px solid white' : 'none')};
+  border-bottom: ${props => (props.select ? '2px solid white' : 'none')};
   box-sizing: border-box;
   padding: 10px 10px;
   font-size: 14px;
@@ -105,46 +106,7 @@ const Tab = styled.li`
   }
 `;
 
-const TabContent = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 30px 0px;
-  transition: all 0.3s ease-in-out;
-`;
-
-const TabLink = styled.a`
-  display: block;
-  cursor: pointer;
-  margin: 10px;
-  color: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease-in-out;
-  font-size: 16px;
-  &:hover {
-    transform: scale(1.01);
-  }
-`;
-
-const ProContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-`;
-const ProItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-  padding: 0px 10px;
-  box-sizing: border-box;
-`;
-const ProImg = styled.img`
-  width: auto;
-  height: 100px;
-  margin-bottom: 10px;
-`;
-const ProTitle = styled.span`
-  display: inline-block;
+const CTitle = styled.span`
   border-radius: 5px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -152,6 +114,13 @@ const ProTitle = styled.span`
   font-size: 16px;
   color: rgba(255, 255, 255, 0.8);
   margin: 3px;
+`;
+
+const TabContent = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 30px 0px;
+  transition: all 0.3s ease-in-out;
 `;
 
 const Collection = styled.button`
@@ -170,214 +139,168 @@ const Collection = styled.button`
   }
 `;
 
-const DetailPresenter = ({ result, loading, error }) => {
-  const initDetailTabs = {
-    youTubeFlag: false,
-    productionCompanyFlag: false,
-    productionCountriesFlag: false,
-    createdByFlag: false,
-    seasonsFlag: false
-  };
-
-  const [detailTabs, setDetailTabs] = useState({
-    ...initDetailTabs,
-    youTubeFlag: true
-  });
-
-  return loading ? (
-    <>
-      <Helmet>
-        <title>Loading | kyuflix</title>
-      </Helmet>
-      <Loader />
-    </>
-  ) : (
-    <Container>
-      <Helmet>
-        <title>
-          {result.original_title ? result.original_title : result.original_name}{' '}
-          | kyuflix
-        </title>
-      </Helmet>
-      <Backdrop
-        bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
-      />
-      <Content>
-        <Cover
-          bgImage={
-            result.poster_path
-              ? `https://image.tmdb.org/t/p/original${result.poster_path}`
-              : require('../../assets/noImage.png')
-          }
+const DetailPresenter = withRouter(
+  ({
+    location: { pathname },
+    match: {
+      params: { id }
+    },
+    result,
+    loading,
+    error
+  }) => {
+    return loading ? (
+      <>
+        <Helmet>
+          <title>Loading | kyuflix</title>
+        </Helmet>
+        <Loader />
+      </>
+    ) : (
+      <Container>
+        <Helmet>
+          <title>
+            {result.original_title
+              ? result.original_title
+              : result.original_name}{' '}
+            | kyuflix
+          </title>
+        </Helmet>
+        <Backdrop
+          bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
         />
-        <Data>
-          <Title>{result.title ? result.title : result.name}</Title>
-          <ItemContainer>
-            <Item>
-              {result.release_date
-                ? result.release_date.substring(0, 4)
-                : result.first_air_date.substring(0, 4)}
-            </Item>
-            <Divider>·</Divider>
-            <Item>
-              {result.runtime ? result.runtime : result.episode_run_time[0]} min
-            </Item>
-            <Divider>·</Divider>
-            <Item>
-              {result.genres &&
-                result.genres.map((genre, idx) =>
-                  idx === result.genres.length - 1
-                    ? genre.name
-                    : `${genre.name} / `
+        <Content>
+          <Cover
+            bgImage={
+              result.poster_path
+                ? `https://image.tmdb.org/t/p/original${result.poster_path}`
+                : require('../../assets/noImage.png')
+            }
+          />
+          <Data>
+            <Title>{result.title ? result.title : result.name}</Title>
+            <ItemContainer>
+              <Item>
+                {result.release_date
+                  ? result.release_date.substring(0, 4)
+                  : result.first_air_date.substring(0, 4)}
+              </Item>
+              <Divider>·</Divider>
+              <Item>
+                {result.runtime ? result.runtime : result.episode_run_time[0]}{' '}
+                min
+              </Item>
+              <Divider>·</Divider>
+              <Item>
+                {result.genres &&
+                  result.genres.map((genre, idx) =>
+                    idx === result.genres.length - 1
+                      ? genre.name
+                      : `${genre.name} / `
+                  )}
+              </Item>
+              {result.imdb_id ? (
+                <>
+                  <Divider>·</Divider>
+                  <Item>
+                    <ImdbLink
+                      href={`https://www.imdb.com/title/${result.imdb_id}`}
+                      target="_blank">
+                      imdb
+                    </ImdbLink>
+                  </Item>
+                </>
+              ) : null}
+            </ItemContainer>
+            <Overview>{result.overview}</Overview>
+            <TabContainer>
+              <Link
+                to={
+                  pathname.split('/')[1] === 'movie'
+                    ? `/movie/${id}/youtube`
+                    : `/show/${id}/youtube`
+                }>
+                {result.videos.results &&
+                  result.videos.results.length !== 0 && (
+                    <Tab
+                      select={
+                        pathname === `/movie/${id}/youtube` ||
+                        pathname === `/show/${id}/youtube`
+                      }>
+                      Youtube
+                    </Tab>
+                  )}
+              </Link>
+              <Link
+                to={
+                  pathname.split('/')[1] === 'movie'
+                    ? `/movie/${id}/companies`
+                    : `/show/${id}/companies`
+                }>
+                {result.production_companies &&
+                  result.production_companies.length !== 0 && (
+                    <Tab
+                      select={
+                        pathname === `/movie/${id}/companies` ||
+                        pathname === `/show/${id}/companies`
+                      }>
+                      Production Company
+                    </Tab>
+                  )}
+              </Link>
+              <Link to={`/movie/${id}/countries`}>
+                {result.production_countries &&
+                  result.production_countries.length !== 0 && (
+                    <Tab select={pathname === `/movie/${id}/countries`}>
+                      Production Countries
+                    </Tab>
+                  )}
+              </Link>
+              <Link to={`/show/${id}/created_by`}>
+                {result.created_by && result.created_by.length !== 0 && (
+                  <Tab select={pathname === `/show/${id}/created_by`}>
+                    Created By
+                  </Tab>
                 )}
-            </Item>
-            {result.imdb_id ? (
-              <>
-                <Divider>·</Divider>
-                <Item>
-                  <ImdbLink
-                    href={`https://www.imdb.com/title/${result.imdb_id}`}
-                    target="_blank"
-                  >
-                    imdb
-                  </ImdbLink>
-                </Item>
-              </>
-            ) : null}
-          </ItemContainer>
-          <Overview>{result.overview}</Overview>
-          <TabContainer>
-            {result.videos.results && result.videos.results.length !== 0 && (
-              <Tab
-                onClick={() =>
-                  setDetailTabs({ ...initDetailTabs, youTubeFlag: true })
-                }
-                Flag={detailTabs.youTubeFlag}
-              >
-                Youtube
-              </Tab>
-            )}
-            {result.production_companies &&
-              result.production_companies.length !== 0 && (
-                <Tab
-                  onClick={() =>
-                    setDetailTabs({
-                      ...initDetailTabs,
-                      productionCompanyFlag: true
-                    })
-                  }
-                  Flag={detailTabs.productionCompanyFlag}
-                >
-                  Production Company
-                </Tab>
+              </Link>
+              <Link to={`/show/${id}/seasons`}>
+                {result.seasons && result.seasons.length !== 0 && (
+                  <Tab select={pathname === `/show/${id}/seasons`}>Seasons</Tab>
+                )}
+              </Link>
+            </TabContainer>
+            <TabContent id="tabResult">
+              {(pathname === `/movie/${id}/youtube` ||
+                pathname === `/show/${id}/youtube`) && (
+                <Videos results={result.videos.results} />
               )}
-            {result.production_countries &&
-              result.production_countries.length !== 0 && (
-                <Tab
-                  onClick={() =>
-                    setDetailTabs({
-                      ...initDetailTabs,
-                      productionCountriesFlag: true
-                    })
-                  }
-                  Flag={detailTabs.productionCountriesFlag}
-                >
-                  Production Countries
-                </Tab>
+              {(pathname === `/movie/${id}/companies` ||
+                pathname === `/show/${id}/companies`) && (
+                <Companies results={result.production_companies} />
               )}
-            {result.created_by && result.created_by.length !== 0 && (
-              <Tab
-                onClick={() =>
-                  setDetailTabs({
-                    ...initDetailTabs,
-                    createdByFlag: true
-                  })
-                }
-                Flag={detailTabs.createdByFlag}
-              >
-                Created By
-              </Tab>
+              {pathname === `/movie/${id}/countries` &&
+                result.production_countries.map((country, idx) => (
+                  <CTitle key={idx}>{country.name}</CTitle>
+                ))}
+              {pathname === `/show/${id}/created_by` &&
+                result.created_by.map(per => (
+                  <CTitle key={per.id}>{per.name}</CTitle>
+                ))}
+              {pathname === `/show/${id}/seasons` && (
+                <Seasons results={result.seasons} />
+              )}
+            </TabContent>
+            {result.belongs_to_collection && (
+              <Link to={`/collections/${result.belongs_to_collection.id}`}>
+                <Collection type="button">Collection</Collection>
+              </Link>
             )}
-            {result.seasons && result.seasons.length !== 0 && (
-              <Tab
-                onClick={() =>
-                  setDetailTabs({
-                    ...initDetailTabs,
-                    seasonsFlag: true
-                  })
-                }
-                Flag={detailTabs.seasonsFlag}
-              >
-                Seasons
-              </Tab>
-            )}
-          </TabContainer>
-          <TabContent id="tabResult">
-            {detailTabs.youTubeFlag &&
-              result.videos.results.map(video => (
-                <TabLink
-                  href={`https://www.youtube.com/watch?v=${video.key}`}
-                  target="_blank"
-                  key={video.id}
-                >
-                  {video.name}
-                </TabLink>
-              ))}
-            {detailTabs.productionCompanyFlag && (
-              <ProContainer>
-                {result.production_companies.map(com => {
-                  return (
-                    <ProItem key={com.id}>
-                      <ProImg
-                        src={
-                          com.logo_path
-                            ? `https://image.tmdb.org/t/p/original${
-                                com.logo_path
-                              }`
-                            : require('../../assets/noImage.png')
-                        }
-                        alt={com.name}
-                      />
-                      <ProTitle>{com.name}</ProTitle>
-                    </ProItem>
-                  );
-                })}
-              </ProContainer>
-            )}
-            {detailTabs.productionCountriesFlag &&
-              result.production_countries.map((coun, idx) => {
-                return <ProTitle key={idx}>{coun.name}</ProTitle>;
-              })}
-            {detailTabs.createdByFlag &&
-              result.created_by.map((per, idx) => {
-                return <ProTitle key={per.id}>{per.name}</ProTitle>;
-              })}
-            {detailTabs.seasonsFlag && (
-              <Section>
-                {result.seasons.map(season => {
-                  return (
-                    <Season
-                      key={season.id}
-                      imageUrl={season.poster_path}
-                      title={season.name}
-                      year={season.air_date}
-                      count={season.episode_count}
-                    />
-                  );
-                })}
-              </Section>
-            )}
-          </TabContent>
-          {result.belongs_to_collection && (
-            <Link to={`/collections/${result.belongs_to_collection.id}`}>
-              <Collection type="button">Collection</Collection>
-            </Link>
-          )}
-        </Data>
-      </Content>
-    </Container>
-  );
-};
+          </Data>
+        </Content>
+      </Container>
+    );
+  }
+);
 
 DetailPresenter.propTypes = {
   result: PropTypes.object,

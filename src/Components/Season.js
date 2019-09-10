@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 const Container = styled.div`
   font-size: 12px;
 `;
@@ -18,9 +19,9 @@ const Count = styled.span`
   position: absolute;
   bottom: 5px;
   right: 5px;
-  font-size : 14px;
-  font-weight : 600;
-  color : #feca57;
+  font-size: 14px;
+  font-weight: 600;
+  color: #feca57;
 `;
 
 const ImageContainer = styled.div`
@@ -58,9 +59,7 @@ const Season = ({ imageUrl, title, year, count }) => {
               : require('../assets/noImage.png')
           }
         />
-        <Count>
-          {count}
-        </Count>
+        <Count>{count}</Count>
       </ImageContainer>
       <Title>
         {title.length > 18 ? `${title.substring(0, 18)}...` : title}
